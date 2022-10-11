@@ -1,7 +1,6 @@
 package model.entities;
 
 import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -27,9 +26,18 @@ public class Reserva {
 		return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 	}
 	
-	public void atualizarData(Date checkin, Date checkout) {
+	public String atualizarData(Date checkin, Date checkout) {
+		Date agora = new Date();
+		if(checkin.before(agora) || checkout.before(agora)) {
+			return "Datas para reserva devem ser posteriores à data atual! ";
+		}
+		if(!checkout.after(checkin)) {
+			return "A data de check-out deve ser posterior à data de check-in!";
+		 }
 		this.checkin = checkin;
 		this.checkout = checkout;
+		return null; 
+		
 	}
 
 	public Integer getNumeroQuarto() {
